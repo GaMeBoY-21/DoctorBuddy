@@ -893,7 +893,7 @@
               "date": "2026-09-01T04:12:45.990065+00:00",
               "author": [
                 {
-                  "display": "MediKiosk, Ministry of Ayush OPD"
+                  "display": "DoctorBuddy"
                 }
               ],
               "title": "OPD intake summary",
@@ -1340,7 +1340,7 @@
             "date": "2026-09-01T04:12:45.990065+00:00",
             "author": [
               {
-                "display": "MediKiosk, Ministry of Ayush OPD"
+                "display": "DoctorBuddy"
               }
             ],
             "title": "OPD intake summary",

@@ -33,12 +33,12 @@ async def lifespan(_app: FastAPI):
     init_db()
     # Hash the demo clinician's password once, at startup.
     auth_users.seed_from_settings()
-    log.info("MediKiosk API up | env=%s | sqlite_fallback=%s", settings.APP_ENV, settings.using_sqlite)
+    log.info("DoctorBuddy API up | env=%s | sqlite_fallback=%s", settings.APP_ENV, settings.using_sqlite)
     yield
 
 
 app = FastAPI(
-    title="MediKiosk API",
+    title="DoctorBuddy API",
     version="0.1.0",
     description="Voice-first OPD intake. Backend for SIH PS 26047.",
     lifespan=lifespan,

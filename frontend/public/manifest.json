@@ -1,7 +1,7 @@
 {
-  "name": "MediKiosk — OPD Intake",
-  "short_name": "MediKiosk",
-  "description": "Voice-first patient intake kiosk for government OPDs.",
+  "name": "DoctorBuddy",
+  "short_name": "DoctorBuddy",
+  "description": "Voice-first patient intake assistant.",
   "start_url": "/",
   "scope": "/",
   "display": "fullscreen",

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Start the whole MediKiosk stack for a demo. The only thing to run on the day.
+# Start the whole DoctorBuddy stack for a demo. The only thing to run on the day.
 #
 #   ./dev.sh            start everything, live
 #   ./dev.sh --replay   start with VITE_REPLAY=true (no network, no API quota)
@@ -259,8 +259,8 @@ PYCHECK
           "  Linux:  sudo systemctl start postgresql"
     fi
   else
-    ok "DATABASE_URL not set -- using the SQLite fallback (./medikiosk.db)"
-    DB_MODE="SQLite (medikiosk.db)"
+    ok "DATABASE_URL not set -- using the SQLite fallback"
+    DB_MODE="SQLite fallback"
   fi
 
   # --- ports
@@ -409,7 +409,7 @@ USERNAME="$(env_value CLINICIAN_USERNAME "$ENV_FILE")"
 
 cat <<SUMMARY
 
-${BOLD}MediKiosk is up${RESET}
+${BOLD}DoctorBuddy is up${RESET}
 
   Backend   http://localhost:${API_PORT}        (docs at /docs)
   Kiosk     http://localhost:${WEB_PORT}

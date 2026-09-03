@@ -44,7 +44,7 @@ SYS_INTERPRETATION = "http://terminology.hl7.org/CodeSystem/v3-ObservationInterp
 # Deterministic id namespace for this application.
 _NS = uuid.UUID("6b1f5f4a-4a0e-5c2b-9f43-1d9c0a7e2f11")
 
-ORGANISATION_NAME = "MediKiosk, Ministry of Ayush OPD"
+ORGANISATION_NAME = "DoctorBuddy"
 
 # LOINC section codes, in standard clinical reading order.
 SECTION_CODES = [

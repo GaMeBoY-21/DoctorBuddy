@@ -5,7 +5,7 @@
 // Deliberately conservative — this caches the app shell only. Nothing patient-
 // related is ever written to the cache.
 
-const CACHE = 'medikiosk-shell-v1';
+const CACHE = 'doctorbuddy-shell-v1';
 const SHELL = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', (event) => {

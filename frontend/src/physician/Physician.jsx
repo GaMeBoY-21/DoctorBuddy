@@ -10,6 +10,7 @@ import EditableField from './EditableField.jsx';
 import {
   confirmCase,
   fetchCase,
+  fetchCaseByToken,
   fetchPatientList,
   rejectCase,
   updateCase,
@@ -81,6 +82,9 @@ export default function Physician({ auth, onSignOut }) {
   const [status, setStatus] = useState('draft'); // draft | accepted | rejected
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState('');
+  const [tokenQuery, setTokenQuery] = useState('');
+  const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState('');
 
   // Poll the queue. A doctor leaves this open; a patient who finishes intake
   // while they are reading a case must appear without a manual refresh, and a
@@ -113,12 +117,36 @@ export default function Physician({ auth, onSignOut }) {
     if (!activeId) return;
     setStatus('draft');
     setNote('');
+    setSearchError('');
     fetchCase(activeId)
       .then(setRecord)
       .catch((e) => {
         if (e?.name !== 'Unauthorized') console.error('[physician] case failed:', e);
       });
   }, [activeId]);
+
+  const searchToken = async (e) => {
+    e.preventDefault();
+    const token = tokenQuery.trim().toUpperCase();
+    if (!token) {
+      setSearchError('Enter a patient token.');
+      return;
+    }
+    setSearching(true);
+    setSearchError('');
+    setNote('');
+    try {
+      const found = await fetchCaseByToken(token);
+      setRecord(found);
+      setActiveId(found.session_id);
+      setStatus('draft');
+      setNote(`Opened patient ${token}`);
+    } catch (err) {
+      setSearchError(err.message || `No patient found for ${token}.`);
+    } finally {
+      setSearching(false);
+    }
+  };
 
   const editField = useCallback(
     (key, value) => {
@@ -169,34 +197,47 @@ export default function Physician({ auth, onSignOut }) {
       .filter(Boolean),
   );
   const mocked = new Set(record?.mocked_fields ?? []);
+  const identityNote = mocked.size ? `Demo values: ${[...mocked].join(', ')}` : '';
+  const activeToken = record?.token ?? queue.find((p) => p.session_id === activeId)?.token;
 
   return (
     <div className="physician">
-      <div
-        className={`physician__banner ${
-          status === 'accepted' ? 'physician__banner--accepted' : 'physician__banner--draft'
-        }`}
-      >
-        {status === 'accepted'
-          ? 'Verified — released to the record'
-          : status === 'rejected'
-            ? 'Rejected — nothing written'
-            : 'Unverified draft — nothing is written until you press Accept'}
-      </div>
-
-      <div className="physician__whoami">
-        <span>
-          Signed in as <strong>{auth?.name ?? auth?.username ?? 'clinician'}</strong>
-          {auth?.role ? ` · ${auth.role}` : ''}
-        </span>
-        <button type="button" className="physician__signout" onClick={() => onSignOut?.(false)}>
-          Sign out
-        </button>
-      </div>
+      <header className="physician__topbar">
+        <div>
+          <div className="physician__brand">DoctorBuddy</div>
+          <div className="physician__portal">Doctor Portal</div>
+        </div>
+        <div className="physician__identity">
+          <span className="physician__doctor">{auth?.name ?? auth?.username ?? 'Clinician'}</span>
+          <span className="physician__role">{auth?.role ?? 'doctor'}</span>
+          <button type="button" className="physician__signout" onClick={() => onSignOut?.(false)}>
+            Sign out
+          </button>
+        </div>
+      </header>
 
       <div className="physician__layout">
         <aside className="queue">
-          <div className="queue__head">Waiting ({queue.length})</div>
+          <div className="queue__head">
+            <span>Patient Queue</span>
+            <strong>Waiting ({queue.length})</strong>
+          </div>
+          <form className="token-search" onSubmit={searchToken}>
+            <label htmlFor="token-search">Find patient</label>
+            <div className="token-search__row">
+              <input
+                id="token-search"
+                value={tokenQuery}
+                onChange={(e) => setTokenQuery(e.target.value.toUpperCase())}
+                placeholder="Enter patient token"
+                autoComplete="off"
+              />
+              <button type="submit" disabled={searching}>
+                {searching ? 'Searching' : 'Search'}
+              </button>
+            </div>
+            {searchError ? <p className="token-search__error">{searchError}</p> : null}
+          </form>
           {queue.map((p) => (
             <button
               key={p.session_id}
@@ -207,7 +248,8 @@ export default function Physician({ auth, onSignOut }) {
               onClick={() => setActiveId(p.session_id)}
             >
               <div className="queue__name">
-                {p.token} · {p.name}
+                <span className="queue__token">{p.token}</span>
+                <span>{p.name || 'Unnamed patient'}</span>
               </div>
               <div className="queue__meta">
                 {p.age}/{p.sex} · {p.complaint}
@@ -231,27 +273,36 @@ export default function Physician({ auth, onSignOut }) {
 
         {record ? (
           <main className="case">
-            <header className="case__header">
-              <span className="case__name">{record.patient.name}</span>
-              <span className="case__meta">
-                {record.patient.age}/{record.patient.sex} · ABHA {record.patient.abha ?? '—'} ·
-                session {record.session_id}
-              </span>
-              {/* Say so on screen. Demographics are not collected for real yet,
-                  and demo values must never be presented as patient data. */}
-              {mocked.size ? (
-                <span className="case__mocked" title={`Demo values: ${[...mocked].join(', ')}`}>
-                  DEMO DATA · {[...mocked].join(', ')}
-                </span>
-              ) : null}
+            <header className="case__header card">
+              <div>
+                <p className="case__eyebrow">Patient Overview</p>
+                <h1 className="case__name">{record.patient.name || 'Unnamed patient'}</h1>
+                <p className="case__meta">Session {record.session_id}</p>
+              </div>
+              <dl className="case__stats">
+                <div>
+                  <dt>Age</dt>
+                  <dd>{record.patient.age ?? '—'}</dd>
+                </div>
+                <div>
+                  <dt>Sex</dt>
+                  <dd>{record.patient.sex ?? '—'}</dd>
+                </div>
+                <div>
+                  <dt>Token</dt>
+                  <dd>{activeToken ?? '—'}</dd>
+                </div>
+                <div>
+                  <dt>ABHA</dt>
+                  <dd>{record.patient.abha ?? '—'}</dd>
+                </div>
+              </dl>
+              {identityNote ? <p className="case__note">{identityNote}</p> : null}
             </header>
 
-            {/* Red flags, read live from the clinical record by the API — not
-                from the stored summary snapshot. This block is why that
-                matters: it is the view a doctor trusts, so it must never show
-                fewer flags than the queue row they clicked. */}
             {(record.red_flags ?? []).length ? (
-              <section className="flags" aria-label="Safety flags">
+              <section className="flags card" aria-label="Safety flags">
+                <h2 className="section__title">Red Flags</h2>
                 {record.red_flags.map((f) => (
                   <div key={f.rule_id} className={`flags__row flags__row--${f.severity}`}>
                     <WarningIcon />
@@ -264,7 +315,7 @@ export default function Physician({ auth, onSignOut }) {
 
             <div className="case__cols">
               {SECTIONS.map((s) => (
-                <section className="section" key={s.key}>
+                <section className={`section card ${s.key === 'hpi' ? 'section--wide' : ''}`} key={s.key}>
                   <h2 className="section__title">
                     {s.title}
                     {lowConfidence.has(s.key) ? (
@@ -283,7 +334,7 @@ export default function Physician({ auth, onSignOut }) {
                 </section>
               ))}
 
-              <section className="section section--wide">
+              <section className="section section--wide card">
                 <h2 className="section__title">Document timeline</h2>
                 <table className="timeline">
                   <thead>
@@ -295,7 +346,7 @@ export default function Physician({ auth, onSignOut }) {
                   </thead>
                   <tbody>
                     {(record.documents ?? []).map((doc) => (
-                      <tr key={doc.id}>
+                      <tr key={doc.doc_id || `${doc.title}-${doc.date}`}>
                         <td className="timeline__date">{doc.date}</td>
                         <td>{doc.title}</td>
                         <td>
@@ -316,22 +367,29 @@ export default function Physician({ auth, onSignOut }) {
                 </table>
               </section>
 
-              <section className="section section--wide fhir">
+              <section className="section section--wide fhir card">
                 <details>
-                  <summary>View FHIR bundle</summary>
+                  <summary>FHIR Data</summary>
                   <pre>{JSON.stringify(record.fhir ?? {}, null, 2)}</pre>
                 </details>
               </section>
             </div>
 
             <div className="actions">
+              <span className="actions__label">
+                {status === 'accepted'
+                  ? 'Record released'
+                  : status === 'rejected'
+                    ? 'Record rejected'
+                    : 'Draft summary'}
+              </span>
               <button
                 type="button"
                 className="action action--accept"
                 onClick={accept}
                 disabled={busy || status === 'accepted'}
               >
-                Accept
+                Accept & Release
               </button>
               <button
                 type="button"
@@ -339,7 +397,7 @@ export default function Physician({ auth, onSignOut }) {
                 onClick={() => setNote('Edit any field inline, then press Accept')}
                 disabled={busy}
               >
-                Amend
+                Amend summary
               </button>
               <button
                 type="button"

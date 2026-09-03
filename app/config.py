@@ -7,10 +7,12 @@ SQLite file so the kiosk demo runs on a laptop with no Postgres installed.
 
 from __future__ import annotations
 
+import json
 from functools import lru_cache
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Where the SQLite fallback lives, relative to the repo root.
@@ -32,6 +34,7 @@ class Settings(BaseSettings):
         env_file=ENV_FILES,
         env_file_encoding="utf-8",
         case_sensitive=False,
+        enable_decoding=False,
         extra="ignore",
     )
 
@@ -75,7 +78,20 @@ class Settings(BaseSettings):
     """development | production. Production refuses to start on SQLite."""
 
     CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
-    """Origins allowed to call the API. Vite dev server and CRA dev server."""
+    """Origins allowed to call the API. Set to the Vercel URL in production."""
+
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def _parse_cors_origins(cls, value: Any) -> Any:
+        """Accept JSON lists or comma-separated values from platform env vars."""
+        if not isinstance(value, str):
+            return value
+        raw = value.strip()
+        if not raw:
+            return []
+        if raw.startswith("["):
+            return json.loads(raw)
+        return [origin.strip() for origin in raw.split(",") if origin.strip()]
 
     SESSION_TTL_SECONDS: int = 3600
     """How long an abandoned session lingers in memory before purge."""

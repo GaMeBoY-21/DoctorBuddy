@@ -73,7 +73,7 @@ export const strings = {
     },
     idle: {
       begin: { label: 'Touch here to begin', audio: 'Touch the screen to begin.' },
-      subtitle: { label: 'Ministry of Ayush · Out-Patient Department', audio: '' },
+      subtitle: { label: 'DoctorBuddy', audio: '' },
     },
     language: {
       title: { label: 'Choose your language', audio: 'Please choose your language.' },

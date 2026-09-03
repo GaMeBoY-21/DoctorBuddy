@@ -512,3 +512,436 @@
   background: #fff;
   cursor: pointer;
 }
+
+/* --------------------------------------------------------- doctor redesign */
+
+.physician {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f6f8f7;
+  color: #17211d;
+}
+
+.physician__topbar {
+  min-height: 72px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #d8e0dc;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.physician__brand {
+  color: #0b6b4f;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.physician__portal {
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.physician__identity {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  min-width: 0;
+}
+
+.physician__doctor {
+  font-weight: 700;
+}
+
+.physician__role {
+  padding: 3px 9px;
+  border: 1px solid #bfd0ca;
+  border-radius: 999px;
+  color: #486159;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.physician__signout {
+  min-height: 36px;
+  padding: 7px 14px;
+  border: 1px solid #bfd0ca;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #17211d;
+  font-weight: 700;
+}
+
+.physician__layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+
+.queue {
+  border-right: 1px solid #d8e0dc;
+  background: #ffffff;
+  overflow-y: auto;
+}
+
+.queue__head {
+  padding: 18px;
+  border-bottom: 1px solid #d8e0dc;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #486159;
+}
+
+.queue__head strong {
+  color: #17211d;
+}
+
+.token-search {
+  padding: 16px 18px;
+  border-bottom: 1px solid #d8e0dc;
+}
+
+.token-search label {
+  display: block;
+  margin-bottom: 7px;
+  color: #486159;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.token-search__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.token-search input {
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #bfd0ca;
+  border-radius: 6px;
+  background: #fbfcfc;
+  color: #17211d;
+  font: inherit;
+}
+
+.token-search button {
+  height: 42px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #0b6b4f;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.token-search button:disabled {
+  opacity: 0.6;
+}
+
+.token-search__error {
+  margin: 8px 0 0;
+  color: #8a1f1f;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.queue__row {
+  margin: 10px 12px;
+  width: calc(100% - 24px);
+  padding: 13px 14px;
+  border: 1px solid #e0e7e3;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.queue__row:hover,
+.queue__row--active {
+  background: #eef6f3;
+  border-color: #88b7a8;
+}
+
+.queue__row--active {
+  border-left: 5px solid #0b6b4f;
+}
+
+.queue__row--flag {
+  border-left: 5px solid #b42318;
+}
+
+.queue__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.queue__token {
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: #17211d;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.case {
+  padding: 20px 22px 96px;
+  overflow-y: auto;
+}
+
+.card {
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.case__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 42%);
+  align-items: start;
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #d8e0dc;
+}
+
+.case__eyebrow {
+  margin: 0 0 5px;
+  color: #486159;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.case__name {
+  margin: 0;
+  color: #17211d;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.case__stats {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.case__stats div {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #e1e7e4;
+  border-radius: 6px;
+  background: #f8faf9;
+}
+
+.case__stats dt {
+  margin-bottom: 3px;
+  color: #486159;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.case__stats dd {
+  margin: 0;
+  color: #17211d;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.case__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #6b4b00;
+  font-size: 13px;
+}
+
+.flags.card,
+.section.card {
+  padding: 16px;
+}
+
+.case__cols {
+  gap: 16px;
+}
+
+.section {
+  margin-bottom: 0;
+}
+
+.section__title {
+  border-bottom: 0;
+  margin-bottom: 10px;
+}
+
+.field {
+  min-height: 38px;
+  padding: 8px 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.timeline {
+  font-size: 15px;
+}
+
+.actions {
+  left: 340px;
+  min-height: 72px;
+  padding: 12px 22px;
+  border-top: 1px solid #d8e0dc;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 -8px 24px rgba(23, 33, 29, 0.08);
+}
+
+.actions__label {
+  color: #486159;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.action {
+  min-height: 42px;
+  padding: 8px 16px;
+  border-width: 1px;
+  border-radius: 6px;
+}
+
+.physician__empty {
+  display: grid;
+  place-items: center;
+  color: #486159;
+}
+
+.login {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f6f8f7;
+}
+
+.login__card {
+  width: min(100%, 430px);
+  padding: 36px;
+  border: 1px solid #d8e0dc;
+  box-shadow: 0 20px 60px rgba(23, 33, 29, 0.08);
+}
+
+.login__brand {
+  margin-bottom: 8px;
+  color: #0b6b4f;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.login__title {
+  margin-bottom: 8px;
+  color: #17211d;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.login__sub {
+  margin-bottom: 24px;
+  color: #486159;
+  font-size: 15px;
+}
+
+.login__input {
+  min-height: 44px;
+  background: #fbfcfc;
+}
+
+.login__submit {
+  min-height: 46px;
+  background: #0b6b4f;
+  font-weight: 800;
+}
+
+.login__secure {
+  margin: 16px 0 0;
+  color: #486159;
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .physician__topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .physician__identity {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .physician__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .queue {
+    max-height: 330px;
+    border-right: 0;
+    border-bottom: 1px solid #d8e0dc;
+  }
+
+  .case__header {
+    grid-template-columns: 1fr;
+  }
+
+  .case__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case__cols {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    left: 0;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .physician__portal,
+  .case__name,
+  .login__title {
+    font-size: 24px;
+  }
+
+  .token-search__row,
+  .case__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    position: static;
+    margin: 0 22px 22px;
+    border: 1px solid #d8e0dc;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+}

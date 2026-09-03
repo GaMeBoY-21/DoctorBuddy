@@ -11,7 +11,7 @@ import { LANGUAGES, t } from '../i18n/strings.js';
 import { useSession, SCREENS } from '../state/SessionContext.jsx';
 
 const CYCLE_MS = 3000;
-const HOSPITAL = 'District Government Hospital';
+const PRODUCT = 'DoctorBuddy';
 
 export default function Idle() {
   const { go, setLanguage } = useSession();
@@ -37,8 +37,7 @@ export default function Idle() {
   return (
     <button type="button" className="idle fade-in" onClick={begin}>
       <header className="idle__header">
-        <div className="idle__ministry">{t('en', 'idle.subtitle').label}</div>
-        <div className="idle__hospital">{HOSPITAL}</div>
+        <div className="idle__hospital">{PRODUCT}</div>
       </header>
 
       <div className="idle__body">

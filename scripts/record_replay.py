@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 B = "http://localhost:8000/api"
 PACE = 4.5
 
-OUT = pathlib.Path("/Users/nikhilesh/projects/Medikiosk/frontend/public/replay/session.json")
+OUT = pathlib.Path("/Users/nikhilesh/projects/DoctorBuddy/frontend/public/replay/session.json")
 
 
 TOKEN = {"access": None}
@@ -53,7 +53,7 @@ def get(path):
 def sign_in():
     """The physician routes need a clinician token now. Credentials come from
     app/.demo-credentials, written when the account was seeded."""
-    creds_file = pathlib.Path("/Users/nikhilesh/projects/Medikiosk/app/.demo-credentials")
+    creds_file = pathlib.Path("/Users/nikhilesh/projects/DoctorBuddy/app/.demo-credentials")
     creds = dict(
         line.split(": ", 1) for line in creds_file.read_text().strip().splitlines()
     )

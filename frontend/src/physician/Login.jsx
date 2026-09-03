@@ -36,11 +36,12 @@ export default function Login({ onSignedIn }) {
   return (
     <div className="login">
       <form className="login__card" onSubmit={submit}>
-        <h1 className="login__title">MediKiosk — clinician sign in</h1>
-        <p className="login__sub">This console shows patient data. Sign in to continue.</p>
+        <div className="login__brand">DoctorBuddy</div>
+        <h1 className="login__title">Doctor Portal</h1>
+        <p className="login__sub">Sign in to review patient cases.</p>
 
         <label className="login__label" htmlFor="username">
-          Username
+          Email / Username
         </label>
         <input
           id="username"
@@ -74,8 +75,9 @@ export default function Login({ onSignedIn }) {
         ) : null}
 
         <button type="submit" className="login__submit" disabled={busy}>
-          {busy ? 'Signing in…' : 'Sign in'}
+          {busy ? 'Signing in…' : 'Sign In'}
         </button>
+        <p className="login__secure">Secure clinician access</p>
       </form>
     </div>
   );

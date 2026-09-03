@@ -16,7 +16,7 @@ lifetime of the process, so yesterday's exhausted keys stay exhausted in a
 server that has been running overnight. A restart clears that.
 
 ```
-cd ~/projects/Medikiosk
+cd ~/projects/DoctorBuddy
 ./dev.sh --check
 ```
 
