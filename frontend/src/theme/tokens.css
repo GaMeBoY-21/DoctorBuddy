@@ -1,0 +1,64 @@
+/* Owner: Ranjith */
+/* MediKiosk design tokens. Government utility, not a product.
+   Austere on purpose: max contrast under OPD tube lighting, glare-heavy tablets. */
+
+:root {
+  /* Colour */
+  --bg: #FFFFFF;
+  --surface: #F1F3F2;
+  --ink: #1A1A1A;
+  --ink-soft: #5A625E;
+  --primary: #0B6B4F;
+  --primary-d: #084B38;
+  --border: #C4CBC8;
+  --alert: #C62828;
+
+  /* Type scale */
+  --fs-question: 40px;
+  --fs-button: 28px;
+  --fs-body: 24px;
+  --fs-caption: 18px;
+  --lh: 1.5;
+
+  /* Layout */
+  --page-max: 720px;
+  --page-pad: 32px;
+  --gap: 24px;
+  --touch-min: 80px;
+  --bottom-bar-h: 96px;
+  --radius: 8px;
+  --border-w: 1px;
+
+  /* Motion — only two in the whole product: mic pulse, 150ms screen fade */
+  --dur: 150ms;
+}
+
+/* Short screens — a 1280x800 landscape panel, which is what the demo hardware
+   actually is. The scale above was drawn for a tall portrait kiosk; on 800px of
+   height every single screen overflowed, putting the A-Z keypad's last row, the
+   consent toggles and sometimes the Next button itself below the fold.
+   Type stays large — this is still a screen read by someone who may not read
+   well — but the padding, gaps and touch targets come down to what 800px can
+   actually hold. Touch targets stay at or above 64px, which is still well
+   past the 44px accessibility floor. */
+@media (max-height: 900px) {
+  :root {
+    --fs-question: 30px;
+    --fs-button: 22px;
+    --fs-body: 20px;
+    --fs-caption: 16px;
+    --page-pad: 20px;
+    --gap: 16px;
+    --touch-min: 64px;
+    --bottom-bar-h: 76px;
+  }
+}
+
+/* Physician console only. Different audience, different rules. */
+.physician {
+  --fs-body: 16px;
+  --fs-caption: 13px;
+  --fs-heading: 20px;
+  --gap: 12px;
+  --touch-min: 32px;
+}

@@ -1,0 +1,1195 @@
+/* Owner: Ranjith */
+/* Shared patient-facing components. Borders, never shadows. */
+
+/* ------------------------------------------------------------- ScreenShell */
+
+.shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.shell__top {
+  padding: var(--page-pad) var(--page-pad) 0;
+  display: flex;
+  justify-content: center;
+  flex: none;
+}
+
+.shell__main {
+  flex: 1 1 auto;
+  /* Without this a flex child refuses to shrink below its content, so the
+     overflow-y below never engages and the page grows instead. */
+  min-height: 0;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--page-pad);
+  /* Keep content clear of the fixed bottom bar. */
+  padding-bottom: calc(var(--bottom-bar-h) + var(--page-pad));
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  /* Last resort only: the compact tokens are sized so the ordinary screens
+     fit without it. When a screen genuinely cannot fit — a long consent text
+     at a large system font — it scrolls here, above the bar, rather than
+     pushing the Next button off the bottom of the world. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.shell__question {
+  font-size: var(--fs-question);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+  /* Never centre body text. */
+  text-align: left;
+}
+
+.shell__caption {
+  font-size: var(--fs-caption);
+  color: var(--ink-soft);
+}
+
+.shell__bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--bottom-bar-h);
+  background: var(--bg);
+  border-top: var(--border-w) solid var(--border);
+  display: flex;
+  align-items: stretch;
+  z-index: 10;
+}
+
+/* Exactly two buttons, always the same size, always the same place. */
+.shell__bar-btn {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: var(--fs-button);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.shell__bar-btn + .shell__bar-btn {
+  border-left: var(--border-w) solid var(--border);
+}
+
+.shell__bar-btn:active {
+  background: var(--surface);
+}
+
+.shell__bar-btn svg {
+  width: 36px;
+  height: 36px;
+  flex: none;
+}
+
+/* ------------------------------------------------------------- phase label */
+/* Replaced the seven progress dots. The interview branches on what the patient
+   says, so it has no fixed length and a fixed count desynced visibly. This
+   names the stage instead of counting it. */
+
+.shell__phase {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* --------------------------------------------------------------- BigButton */
+
+.btn {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 18px 24px;
+  border-radius: var(--radius);
+  font-size: var(--fs-button);
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 2px solid transparent;
+}
+
+.btn svg {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+
+.btn--primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn--primary:active {
+  background: var(--primary-d);
+}
+
+/* Refusal is never harder than acceptance: same size, same weight, same row. */
+.btn--outline {
+  background: var(--bg);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--outline:active {
+  background: var(--surface);
+}
+
+.btn--surface {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+.btn--surface:active {
+  background: #e5e9e7;
+}
+
+.btn--alert {
+  background: var(--alert);
+  color: #fff;
+}
+
+.btn[disabled] {
+  opacity: 0.4;
+}
+
+.btn--center {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------- IconTile */
+
+.tile {
+  min-height: 160px;
+  padding: 20px 16px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.tile svg {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
+
+.tile__label {
+  font-size: var(--fs-button);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.tile:active,
+.tile--selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Language tiles: the script itself is the whole content. */
+.tile--language {
+  min-height: 140px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.row {
+  display: flex;
+  gap: var(--gap);
+}
+
+.row > * {
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------- MicButton */
+
+.mic {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  flex: none;
+}
+
+.mic svg {
+  width: 64px;
+  height: 64px;
+}
+
+.mic:active {
+  background: var(--primary-d);
+}
+
+.mic[disabled] {
+  background: var(--surface);
+  color: var(--ink-soft);
+  border: 2px solid var(--border);
+}
+
+/* Motion #1 of 2: the mic pulses while listening.
+   A scaling ring, not a box-shadow — the design system has no shadows. */
+.mic--listening::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 4px solid var(--primary);
+  animation: mic-ring 1.4s ease-out infinite;
+}
+
+@keyframes mic-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.mic-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.mic-block__hint {
+  font-size: var(--fs-caption);
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------ TranscriptBox */
+
+.transcript {
+  min-height: 140px;
+  padding: 20px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* The box is a real input on every question, so it has to look like one the
+   patient can put a finger in: full width, no inner border fighting the outer
+   one, and text at the same size as everything else on the screen. */
+.transcript__input {
+  flex: 1;
+  width: 100%;
+  min-height: 92px;
+  padding: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  /* index.css disables selection for the UI chrome; an input must opt back in
+     or the patient cannot place a cursor to fix one wrong word. */
+  user-select: text;
+}
+
+.transcript__input::placeholder {
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
+/* The whole box lights up on focus, not just the invisible textarea inside it:
+   a 2px inner ring on a 40px-type kiosk is not findable. */
+.transcript:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.transcript__input:focus-visible {
+  outline: none;
+}
+
+.transcript__final {
+  color: var(--ink);
+}
+
+.transcript__interim {
+  color: var(--ink-soft);
+}
+
+.transcript__placeholder {
+  color: var(--ink-soft);
+}
+
+/* ------------------------------------------------------------------ Keypad */
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.keypad--alpha {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.keypad__key {
+  min-height: var(--touch-min);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 32px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keypad--alpha .keypad__key {
+  min-height: 64px;
+  font-size: var(--fs-button);
+}
+
+.keypad__key:active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.keypad__key--wide {
+  grid-column: span 2;
+  font-size: var(--fs-button);
+}
+
+.keypad__display {
+  min-height: var(--touch-min);
+  padding: 16px 20px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+}
+
+.keypad__display--empty {
+  color: var(--ink-soft);
+  letter-spacing: normal;
+  font-size: var(--fs-body);
+  font-weight: 400;
+}
+
+/* Names and other free text: the wide tracking is only for masked digits. */
+.keypad__display--text {
+  letter-spacing: normal;
+  font-size: var(--fs-button);
+}
+
+/* ------------------------------------------------------------------ Toggle */
+
+.toggle {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: left;
+  font-size: var(--fs-button);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.toggle__box {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border: 3px solid var(--ink);
+  border-radius: 6px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+}
+
+.toggle--on .toggle__box {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.toggle__box svg {
+  width: 34px;
+  height: 34px;
+}
+
+/* ------------------------------------------------------------ Thumbnails */
+
+.thumbs {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.thumb {
+  position: relative;
+  flex: none;
+  width: 140px;
+  height: 180px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb__remove svg {
+  width: 30px;
+  height: 30px;
+}
+
+.thumb__status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 4px 8px;
+  font-size: 14px;
+  background: var(--bg);
+  border-top: var(--border-w) solid var(--border);
+  color: var(--ink-soft);
+}
+
+/* --------------------------------------------------------------- Overlay */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--page-pad);
+}
+
+.overlay__inner {
+  width: 100%;
+  max-width: var(--page-max);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.overlay__title {
+  font-size: var(--fs-question);
+  font-weight: 600;
+}
+
+.overlay__count {
+  font-size: 72px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* ------------------------------------------------- UnderstandingPanel */
+/* Sits beside the transcript so the patient sees speech turning into
+   structured fields, not just being recorded. */
+
+.interview__row {
+  display: flex;
+  gap: var(--gap);
+  align-items: flex-start;
+  width: 100%;
+  /* Children may shrink below their content size; without this a long panel
+     or a long transcript makes the row — and so the page — taller than the
+     kiosk screen, and the bottom of the panel disappears behind the fixed
+     bottom bar. */
+  min-height: 0;
+}
+
+.interview__row > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.understanding {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  background: var(--bg);
+  /* Hard ceiling as well as the six-item cap in the component. Six rows of a
+     very long value could still push the panel past the bottom of the screen,
+     and the screen itself must never scroll. */
+  max-height: 44vh;
+  overflow-y: auto;
+}
+
+.understanding__more {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid var(--border);
+  font-size: var(--fs-caption);
+  color: var(--ink-soft);
+}
+
+.understanding__title {
+  margin: 0 0 12px;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.understanding__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.understanding__item {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+}
+
+.understanding__key {
+  color: var(--ink-soft);
+  flex: 0 0 auto;
+}
+
+.understanding__value {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* An uncertain value must never read as a confident one. Two independent
+   signals — weight/colour AND a mark — so it still reads on a projector and
+   without colour vision. */
+.understanding__item--unsure .understanding__value {
+  font-weight: 400;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.understanding__unsure-mark {
+  display: inline-block;
+  margin-left: 8px;
+  min-width: 24px;
+  padding: 0 6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: var(--fs-caption);
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* One column on a narrow kiosk: the transcript must never be squeezed. */
+@media (max-width: 900px) {
+  .interview__row {
+    flex-direction: column;
+  }
+}
+
+/* -------------------------------------------------------------- ReplayBadge */
+/* Shown only when VITE_REPLAY=true. Deliberately unmissable and always on top:
+   a recording must never be demonstrated as if it were live. */
+
+.replay-badge {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  padding: 6px 14px;
+  border: 2px solid var(--alert);
+  border-radius: var(--radius);
+  background: var(--alert);
+  color: #fff;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+}
+
+
+/* ------------------------------------------------ short-screen adjustments */
+/* Paired with the compact tokens in theme/tokens.css. Everything here exists
+   so that a 1280x800 panel needs no scrolling at all on the ordinary screens;
+   see .shell__main's overflow-y for the genuine last resort. */
+/* The compact scale. Also applied to every window wide enough for the
+   two-column layout, not just short ones: on a tall window everything stayed
+   full size, the column came out ~37px over, and Next was pushed onto the
+   understanding panel. The layout and the scale belong to the same decision. */
+@media (max-height: 900px), (min-width: 1000px) {
+  .mic {
+    width: 96px;
+    height: 96px;
+  }
+
+  .mic svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .keypad {
+    gap: 10px;
+  }
+
+  .keypad--alpha {
+    gap: 8px;
+  }
+
+  .keypad--alpha .keypad__key {
+    min-height: 52px;
+  }
+
+  .keypad__key {
+    font-size: 26px;
+  }
+
+  .keypad__display {
+    min-height: 60px;
+    padding: 10px 16px;
+    font-size: 28px;
+  }
+
+  .transcript {
+    min-height: 96px;
+    padding: 14px;
+  }
+
+  .transcript__input {
+    min-height: 56px;
+  }
+
+  .tile {
+    min-height: 92px;
+    padding: 12px;
+    gap: 6px;
+  }
+
+  .tile svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .btn {
+    padding: 12px 18px;
+  }
+
+  .consent__text {
+    font-size: var(--fs-caption);
+  }
+
+  /* The consent screen is the tallest in the app and legally the one that must
+     not have a control below the fold. 3 toggles at 95px did not leave room
+     for "I agree" / "I do not agree" above the bottom bar. */
+  .toggle {
+    padding: 10px 16px;
+    gap: 14px;
+  }
+
+  .toggle__box {
+    width: 36px;
+    height: 36px;
+  }
+
+  .toggle__box svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .understanding {
+    padding: 14px;
+    max-height: 34vh;
+  }
+
+  .understanding__list {
+    gap: 6px;
+  }
+}
+
+/* ----------------------------------------------------------- BilingualText */
+/* Chosen language full size, English beneath at ~60%. Rendered only when a
+   language has actually been chosen and it is not English — see
+   BilingualText.jsx. */
+
+.bilingual {
+  display: flex;
+  flex-direction: column;
+  /* Tight, so the English line reads as a subtitle of the line above rather
+     than as a separate paragraph. */
+  gap: 2px;
+  min-width: 0;
+}
+
+.bilingual__primary {
+  /* Inherits the size of whatever it replaced (question, button, tile). */
+  line-height: 1.25;
+}
+
+.bilingual__english {
+  font-size: 0.6em;
+  line-height: 1.25;
+  font-weight: 400;
+  color: var(--ink-soft);
+  /* Long English sentences must wrap rather than widen a button. */
+  overflow-wrap: anywhere;
+}
+
+/* Buttons and tiles centre their label; keep both lines on the same axis. */
+.btn--center .bilingual,
+.tile .bilingual {
+  align-items: center;
+  text-align: center;
+}
+
+.shell__bar-btn .bilingual {
+  align-items: center;
+  text-align: center;
+}
+
+/* Two lines where there was one: give the fixed bottom bar room rather than
+   letting the English line clip. */
+.shell__bar-btn .bilingual__english {
+  font-size: 0.55em;
+}
+
+/* ------------------------------------------------------------ ListenButton */
+/* The only control that produces audio. Lives on the question, because the
+   bottom bar is chrome a patient learns to skip past, and a patient who cannot
+   read needs to find this. Icon AND text: the icon alone is not a word. */
+
+.listen {
+  /* 80px flat, not var(--touch-min). The compact scale drops that to 64px on
+     a short screen, and this is the one control a patient who cannot read has
+     to be able to hit. It keeps its full size everywhere. */
+  min-height: 80px;
+  min-width: 200px;
+  padding: 16px 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--primary);
+  font-size: var(--fs-button);
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.listen svg {
+  width: 40px;
+  height: 40px;
+  flex: none;
+}
+
+.listen:active {
+  background: var(--surface);
+}
+
+/* Speaking and silent must be tellable apart without colour: the icon becomes
+   a stop square and the label becomes "Stop". */
+.listen--speaking {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.listen:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* Same component in the fixed bottom bar: inherit the bar's own geometry so
+   the two buttons there stay identical in size and position. */
+.shell__bar-btn.listen {
+  min-width: 0;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--ink);
+  align-self: stretch;
+}
+
+.shell__bar-btn.listen--speaking {
+  background: var(--surface);
+  color: var(--primary);
+}
+
+.shell__bar-btn.listen svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* ------------------------------------ interview layout on a short landscape */
+/* The interview screen carries the most at once: question, Listen, option
+   tiles, mic, transcript, understanding panel and Next. Stacked in one column
+   on an 800px-tall panel the column runs past the bottom, and because the page
+   is (correctly) forbidden to scroll, the overflow showed up as Next sitting
+   on top of the transcript and the panel disappearing behind the fixed bar.
+ 
+   Landscape has ~560px of unused width. Two columns: what the patient acts on
+   down the left, what the kiosk is showing them down the right.
+ 
+   The ONLY flexible element is the understanding panel. The question, tiles,
+   mic, transcript and Next all keep their size; the panel gives up room and
+   scrolls inside itself, because it is the one thing here that is supplementary
+   rather than a control. */
+
+@media (min-width: 1000px) {
+  .shell__main:has(.interview__row) {
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* question | listen | body (takes the slack) | mic + Next */
+    /* question | listen | tiles | mic | next.
+       Content-sized, not 1fr for the tile row: 1fr is whatever is left over,
+       and five tiles carrying their English are taller than the leftover, so
+       the grid drew them straight through the mic below. */
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: 32px;
+    row-gap: 12px;
+    align-content: start;
+    align-items: start;
+    min-height: 0;
+  }
+
+  .shell__main:has(.interview__row) > .shell__question {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .shell__main:has(.interview__row) > .listen--question {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  /* Left: what the patient touches. */
+  .shell__main:has(.interview__row) > .grid-2,
+  .shell__main:has(.interview__row) > .grid-3 {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+  }
+
+  /* Its own row. Sharing the tile row and being pinned to its bottom worked
+     only while the tiles stayed under about 200px; five tiles with their
+     English underneath are 236px, and the mic was then drawn through them.
+     The panel keeps the space anyway by spanning both rows in column 2, which
+     is what the sharing was for. */
+  .shell__main:has(.interview__row) > .mic-block {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  /* Right: what the kiosk is showing back. */
+  .shell__main:has(.interview__row) > .interview__row {
+    grid-column: 2;
+    /* Spans the tile row AND the mic row: only the transcript and the panel
+       live in this column, so it takes the full height instead of leaving the
+       mic's row empty beside it. */
+    grid-row: 3 / span 2;
+    flex-direction: column;
+    align-items: stretch;
+    /* stretch, not start: the grid gives this row a definite height, and
+       without stretching the box sizes to its content instead and spills into
+       the row below — which is what put Next on top of the transcript. */
+    align-self: stretch;
+    min-height: 0;
+    /* Children must not spill past the row, which is what put the panel
+       behind the bottom bar. */
+    overflow: hidden;
+  }
+
+  /* Next sits in its own row beneath the transcript, never beside or over it. */
+  .shell__main:has(.interview__row) > .btn--primary {
+    grid-column: 2;
+    grid-row: 5;
+    align-self: end;
+  }
+
+  /* The transcript keeps its size; the panel absorbs whatever is left. */
+  .shell__main:has(.interview__row) .transcript {
+    flex: 0 0 auto;
+  }
+
+  .shell__main:has(.interview__row) .understanding {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+  }
+}
+
+/* The chief-complaint screen has the same shape minus the understanding panel
+   (nine body-region tiles, mic, transcript, Next) and overflowed the same way.
+   :has(.interview__row) does not match it, so it needs its own placement. */
+@media (min-width: 1000px) {
+  .shell__main:has(.transcript):not(:has(.interview__row)) {
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    column-gap: 32px;
+    row-gap: 12px;
+    align-content: start;
+    min-height: 0;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .shell__question {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .listen--question {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .grid-2,
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .grid-3 {
+    grid-column: 1;
+    grid-row: 3 / span 2;
+    align-self: start;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .mic-block {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .transcript {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: end;
+  }
+
+  .shell__main:has(.transcript):not(:has(.interview__row)) > .btn--primary {
+    grid-column: 2;
+    grid-row: 4;
+    align-self: end;
+  }
+}
+
+/* The name screen stacks a display, a mic and a 26-key A-Z keypad, which is
+   788px of content in a 704px band — Next ended up behind the bottom bar. The
+   keypad is the one wide element, so it takes its own column and the controls
+   sit beside it. Applies to the number keypads too, which were only just
+   fitting. */
+@media (min-width: 1000px) {
+  .shell__main:has(.keypad) {
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto;
+    column-gap: 32px;
+    row-gap: 12px;
+    align-content: start;
+    align-items: start;
+  }
+
+  .shell__main:has(.keypad) > .shell__question {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .shell__main:has(.keypad) > .listen--question {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .shell__main:has(.keypad) > .keypad__display {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .shell__main:has(.keypad) > .mic-block {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .shell__main:has(.keypad) > .btn--primary {
+    grid-column: 1;
+    grid-row: 5;
+  }
+
+  /* Spans the three control rows so the keypad keeps its full height whether
+     or not the mic is there — recognition being unavailable must not reflow
+     the keys under the patient's finger. */
+  .shell__main:has(.keypad) > .keypad {
+    grid-column: 2;
+    grid-row: 3 / span 3;
+  }
+}
+
+/* Consent stacked an explanation, three toggles and two buttons, and in every
+   language the Agree button sat entirely behind the bottom bar — the patient
+   could not consent at all, on the one screen that legally has to work. The
+   explanation takes its own column so the controls come up beside it. Kannada
+   sets the height here: its explanation runs 25px taller than Hindi's. */
+@media (min-width: 1000px) {
+  .shell__main:has(.consent__text) {
+    max-width: 1180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: 32px;
+    row-gap: 16px;
+    align-content: start;
+    align-items: start;
+  }
+
+  .shell__main:has(.consent__text) > .shell__question {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .shell__main:has(.consent__text) > .listen--question {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .shell__main:has(.consent__text) > .consent__text {
+    grid-column: 1;
+    grid-row: 3 / span 2;
+  }
+
+  .shell__main:has(.consent__text) > .stack {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .shell__main:has(.consent__text) > .consent__actions {
+    grid-column: 2;
+    grid-row: 4;
+  }
+}
+
+/* ------------------------------------------- transcript while the mic is on */
+
+/* Below 1100px the landscape grid above does not apply and the screen falls
+   back to a single column: question, tiles, mic, transcript, Next. With nine
+   body-region tiles that pushed the transcript to 770px on a 768px-tall
+   window — behind the bottom bar, off the screen, while the mic said
+   "Listening". The patient talks and sees nothing come back, which is the one
+   thing the transcript exists to prevent: it is how they catch a misheard
+   word before it becomes clinical history.
+   
+   So while the mic is live the option tiles are the element that gives up
+   space, capped and scrollable. The patient chose to speak; the tiles are the
+   path they did not take, and they stay reachable by scrolling rather than
+   being removed. The transcript never shrinks. */
+@media (max-width: 999px) {
+  .shell__main--listening > .grid-2,
+  .shell__main--listening > .grid-3 {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: 26vh;
+    overflow-y: auto;
+  }
+
+  .shell__main--listening > .transcript,
+  .shell__main--listening > .interview__row {
+    flex: 0 0 auto;
+  }
+}
